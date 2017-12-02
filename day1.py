@@ -12,15 +12,32 @@ def process_captcha(captcha):
                 total_count += int(char)
     return total_count
 
+def half_loop_captcha(captcha):
+    captcha_string = str(captcha)
+    total_count = 0
+    assert len(captcha_string) % 2 == 0
+    half_length = int(len(captcha_string) / 2)
+    for i in range(half_length):
+        if captcha_string[i] == captcha_string[i + half_length]:
+            total_count += 2 * int(captcha_string[i])
+    return total_count
+
 def test_answer():
     assert process_captcha(1122) == 3
     assert process_captcha(1111) == 4
     assert process_captcha(1234) == 0
     assert process_captcha(91212129) == 9
 
+    assert half_loop_captcha(1212) == 6
+    assert half_loop_captcha(1221) == 0
+    assert half_loop_captcha(123425) == 4
+    assert half_loop_captcha(123123) == 12
+    assert half_loop_captcha(12131415) == 4
+
 def main():
     test_answer()
     print(process_captcha(magic_captcha))
+    print(half_loop_captcha(magic_captcha))
 
 if __name__ == "__main__":
     main()
